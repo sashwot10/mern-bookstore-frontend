@@ -56,7 +56,7 @@ function Cart() {
   };
 
   return (
-    <div className="sm:px-10 md:px-45 lg:px-80 xl:px-150">
+    <div className="mt-20 sm:px-10 md:px-45 lg:px-80 xl:px-150">
       <h2 className="text-2xl font-bold">Your Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty</p>
@@ -103,16 +103,17 @@ function Cart() {
             <h3 className="text-xl font-bold">Total: ${getTotalPrice()}</h3>
             <button
               onClick={clearCart}
-              className="mt-3 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+              className="mt-3 px-4 py-2 bg-red-500 text-white rounded "
             >
               Clear Cart
             </button>
             {/* Checkout Button */}
             <button
-              className="mt-3 ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-            >
-              Checkout
-            </button>
+        onClick={() => navigate("/checkout")}
+        className="mt-3 ml-4 px-4 py-2 bg-red-500 text-white rounded"
+      >
+        Checkout
+      </button>
           </div>
         </div>
       )}

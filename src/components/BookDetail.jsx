@@ -25,7 +25,7 @@ function BookDetail() {
   if (!book) return <p>Loading...</p>;
 
   return ( 
-    <div className="flex justify-center items-center h-screen">
+    <div className="sm:ml-10 md:ml-25 lg:ml-50 xl:ml-120 flex justify-center items-center h-screen">
       <div className="p-10 border rounded-lg shadow-lg bg-gray-800 text-white w-full max-w-lg">
         <h2 className="text-5xl font-bold text-white">{book.title}</h2>
         <p className="text-lg text-gray-400">by {book.author}</p>
