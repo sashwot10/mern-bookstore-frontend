@@ -56,7 +56,7 @@ function Cart() {
   };
 
   return (
-    <div className="mt-20 sm:px-10 md:px-45 lg:px-80 xl:px-150">
+    <div className="mt-20 ">
       <h2 className="text-2xl font-bold">Your Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty</p>
@@ -73,14 +73,14 @@ function Cart() {
                       <div className="flex items-center">
                         <button
                           onClick={() => updateQuantity(item.book._id, item.quantity - 1)}
-                          className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700"
+                          className="px-3 py-1 px-3 py-1  text-red-500 rounded hover:text-red-600"
                         >
                           -
                         </button>
                         <span className="mx-2">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.book._id, item.quantity + 1)}
-                          className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700"
+                          className="px-3 py-1 bpx-3 py-1  text-green-500 rounded hover:text-green-600"
                         >
                           +
                         </button>
@@ -92,7 +92,7 @@ function Cart() {
                 </div>
                 <button
                   onClick={() => removeFromCart(item.book?._id)}
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700"
+                  className="px-3 py-1  text-red-500 rounded hover:text-red-600"
                 >
                   Remove
                 </button>
@@ -101,19 +101,20 @@ function Cart() {
           </ul>
           <div className="mt-4">
             <h3 className="text-xl font-bold">Total: ${getTotalPrice()}</h3>
+            {/* Checkout Button */}
+            <button
+              onClick={() => navigate("/checkout")}
+              className="mt-3 ml-4 px-4 py-2 px-3 py-1  text-blue-500 rounded hover:text-blue-600"
+            >
+              Checkout
+            </button>
+            {/* Clear Cart Button */}
             <button
               onClick={clearCart}
-              className="mt-3 px-4 py-2 bg-red-500 text-white rounded "
+              className="mt-3 px-4 py-2  px-3 py-1 ml-32  text-red-500 rounded hover:text-red-600"
             >
               Clear Cart
             </button>
-            {/* Checkout Button */}
-            <button
-        onClick={() => navigate("/checkout")}
-        className="mt-3 ml-4 px-4 py-2 bg-red-500 text-white rounded"
-      >
-        Checkout
-      </button>
           </div>
         </div>
       )}

@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../contexts/CartContext';
-import { Link } from 'react-router-dom'; // Import the Link component for routing
-import { useAuth } from '../contexts/AuthContext'; // Import AuthContext to check if the user is logged in
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+import { FaShoppingCart, FaEye } from 'react-icons/fa';
+import Search from './Search';
 
 function BookList() {
   const [books, setBooks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const { addToCart } = useCart();
-  const { user } = useAuth(); // Get user info from AuthContext
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -21,39 +28,192 @@ function BookList() {
     fetchBooks();
   }, []);
 
+  // Filter books based on search query
+  const filteredBooks = books.filter((book) =>
+    book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    book.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    book.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Separate books by availability and category
+  const availableBooks = filteredBooks.filter((book) => book.stock > 0);
+  const outOfStockBooks = filteredBooks.filter((book) => book.stock === 0);
+  const dystopianBooks = filteredBooks.filter((book) => book.category === 'Dystopian');
+  const classicBooks = filteredBooks.filter((book) => book.category === 'Classic');
+  const fantasyBooks = filteredBooks.filter((book) => book.category === 'Fantasy');
+  const popularAuthorBooks = filteredBooks.filter(
+    (book) => book.author === 'Nora Roberts' || book.author === 'Stephen King'
+  );
+
+  // Swiper settings
+  const swiperSettings = {
+    navigation: true,
+    modules: [Navigation],
+    spaceBetween: 20,
+    slidesPerView: 4, // Default for larger screens
+    breakpoints: {
+      0: { slidesPerView: 1 },  // Below 640px, 1 book per slide
+      640: { slidesPerView: 2 }, // 640px and up, 2 books per slide
+      1024: { slidesPerView: 4 }, // 1024px and up, 3 books per slide
+    },
+    onResize: (swiper) => console.log("Current breakpoint:", swiper.currentBreakpoint)
+  };
+
+  // Render Book Section
+  const renderBookSection = (books, category) => (
+    <div className="max-w-6xl mx-auto mb-8">
+      <h3 className="text-xl font-semibold text-gray-900">{category}</h3>
+      <Swiper className="swiper-container" {...swiperSettings}>
+        {books.map((book) => (
+          <SwiperSlide key={book._id}>
+            <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
+              <div className="absolute top-2 left-0 right-0 mx-auto text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Link
+                  to={`/book/${book._id}`}
+                  className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500 flex items-center justify-center"
+                >
+                  <FaEye className="mr-2" /> View Details
+                </Link>
+              </div>
+
+              <h3 className="text-xl font-semibold text-gray-900">{book.title}</h3>
+              <p className="text-gray-600">by {book.author}</p>
+              <p className="text-gray-800 font-bold">${book.price}</p>
+              <p className="text-gray-500">{book.category}</p>
+              <p className="text-gray-600">{book.description.substring(0, 55)}...</p>
+              <p className="text-gray-700">Stock: {book.stock}</p>
+              <div className="mt-4 flex justify-center space-x-3">
+                {user && (
+                  <button
+                    onClick={() => addToCart(book._id, 1)}
+                    className="px-4 py-2 text-blue-500 flex items-center"
+                  >
+                    <FaShoppingCart className="mr-2" /> Add to Cart
+                  </button>
+                )}
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {books.map((book) => (
-        <div key={book._id} className="border p-4 rounded-lg shadow-lg">
-          <h3 className="text-xl font-bold">{book.title}</h3>
-          <p className="text-sm text-gray-300">by {book.author}</p>
-          <p className="text-gray-100">${book.price}</p>
-          <p className="text-gray-200">{book.category}</p>
-          <p className="text-gray-400">
-            {book.description.length > 55 ? `${book.description.substring(0, 55)}...` : book.description}
-          </p>
-          <p className="text-gray-10">Stock: {book.stock}</p>
-          
-          <div className="flex justify-between">
-            {user && ( // Only show the "Add to Cart" button if the user is logged in
-              <button
-                onClick={() => addToCart(book._id, 1)}
-                className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-              >
-                Add to Cart
-              </button>
-            )}
-            
-            {/* Link to the BookDetail page */}
-            <Link
-              to={`/book/${book._id}`}
-              className="mt-3 px-4 py-2 bg-black-500 text-white rounded hover:bg--red700"
-            >
-              View Detail
-            </Link>
-          </div>
+    <div className="min-h-screen py-10">
+      {/* Search Bar */}
+      <Search onSearch={setSearchQuery} />
+
+      {/* Heading */}
+      <div className="max-w-5xl py-10 mx-auto text-center mb-8">
+        <h1 className="responsive-heading">Explore Our Collection</h1>
+        <p className="text-gray-600">Find your next favorite book</p>
+      </div>
+
+      {/* Available Books Section */}
+      <div className="max-w-6xl mx-auto">
+        <Swiper {...swiperSettings}>
+          {availableBooks.map((book) => (
+            <SwiperSlide key={book._id}>
+              <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
+                <div className="absolute top-2 left-0 right-0 mx-auto text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Link
+                    to={`/book/${book._id}`}
+                    className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500 flex items-center justify-center"
+                  >
+                    <FaEye className="mr-2" /> View Details
+                  </Link>
+                </div>
+
+                <h3 className="text-xl font-semibold text-gray-900">{book.title}</h3>
+                <p className="text-gray-600">by {book.author}</p>
+                <p className="text-gray-800 font-bold">${book.price}</p>
+                <p className="text-gray-500">{book.category}</p>
+                <p className="text-gray-600">{book.description.substring(0, 55)}...</p>
+                <p className="text-gray-700">Stock: {book.stock}</p>
+                <div className="mt-4 flex justify-center space-x-3">
+                  {user && (
+                    <button
+                      onClick={() => addToCart(book._id, 1)}
+                      className="px-4 py-2 text-blue-500 flex items-center"
+                    >
+                      <FaShoppingCart className="mr-2" /> Add to Cart
+                    </button>
+                  )}
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* View All Books Button */}
+      <div className="text-center mt-12">
+        <Link
+          to="/view-all-books"
+          className="px-6 py-3 bg-blue-200 rounded hover:bg-blue-400"
+        >
+          View All Books
+        </Link>
+      </div>
+
+      {/* Out of Stock Books Section */}
+      {outOfStockBooks.length > 0 && (
+        <div className="max-w-5xl mx-auto text-center mt-12">
+          <h2 className="text-2xl font-bold text-red-600">Out of Stock</h2>
+          <p className="text-gray-600">These books are currently unavailable</p>
         </div>
-      ))}
+      )}
+      <div className="max-w-6xl mx-auto">
+        <Swiper {...swiperSettings}>
+          {outOfStockBooks.map((book) => (
+            <SwiperSlide key={book._id}>
+              <div className="bg-gray-200 shadow-lg rounded-lg p-5 text-center opacity-80 transition-all transform hover:scale-105 hover:shadow-2xl">
+                <h3 className="text-xl font-semibold text-gray-900">{book.title}</h3>
+                <p className="text-gray-600">by {book.author}</p>
+                <p className="text-gray-500">{book.category}</p>
+                <p className="text-gray-600">{book.description.substring(0, 55)}...</p>
+                <p className="text-red-600 font-bold">Out of Stock</p>
+                <div className="mt-4">
+                  <Link
+                    to={`/book/${book._id}`}
+                    className="px-4 py-2 text-black rounded hover:bg-blue flex items-center justify-center"
+                  >
+                    <FaEye className="mr-2" /> View Details
+                  </Link>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* Popular Categories Section */}
+      <div className="max-w-5xl mx-auto mb-8">
+      <h1 class="responsive-heading">Popular Categories</h1>
+      </div>
+
+      {/* Category Sections */}
+      {renderBookSection(dystopianBooks, 'Dystopian')}
+      {renderBookSection(classicBooks, 'Classic')}
+      {renderBookSection(fantasyBooks, 'Fantasy')}
+
+      {/* Popular Authors Section */}
+      <div className="max-w-6xl mx-auto mb-8">
+      <h1 class="responsive-heading">Popular Authors</h1>
+      </div>
+      {renderBookSection(
+        popularAuthorBooks.filter((book) => book.author === 'Stephen King'),
+        'Stephen King'
+      )}
+      
+      <div className="max-w-6xl mx-auto mb-8">
+       
+      </div>
+      {renderBookSection(
+        popularAuthorBooks.filter((book) => book.author === 'Nora Roberts'),
+        'Nora Roberts'
+      )}
     </div>
   );
 }

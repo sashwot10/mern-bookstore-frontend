@@ -13,6 +13,58 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.responsive-heading {
+  font-size: 1.25rem; /* 20px */
+  font-weight: bold;
+  color: #1a202c; /* Gray 900 */
+}
+
+/* For larger screens (tablet and above) */
+@media (min-width: 640px) {
+  .responsive-heading {
+    font-size: 1.875rem; /* 30px */
+  }
+}
+
+/* For even larger screens (desktop and above) */
+@media (min-width: 1024px) {
+  .responsive-heading {
+    font-size: 2.25rem; /* 36px */
+  }
+}
+/* Default font size */
+.responsive-text {
+  font-size: 1.25rem; /* 20px */
+  color: #4a5568; /* Gray 600 */
+  margin-top: 0.5rem; /* 8px */
+}
+
+/* For larger screens (tablet and above) */
+@media (min-width: 640px) {
+  .responsive-text {
+    font-size: 1.5rem; /* 24px */
+  }
+}
+
+/* For even larger screens (desktop and above) */
+@media (min-width: 1024px) {
+  .responsive-text {
+    font-size: 1.875rem; /* 30px */
+  }
+}
+/* Optional CSS for swiper container */
+.swiper-container {
+  width: 100%;
+  max-width: 100%;
+   padding-bottom: 50px; /* Add some space at the bottom */
+}
+
+/* Adjust BookCard width and margins if needed */
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
 
 a {
   font-weight: 500;
@@ -23,14 +75,13 @@ a:hover {
   color: #535bf2;
 }
 
-body { 
+body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  justify-content: center; /* Centers horizontally */
+  align-items: flex-start; /* Aligns content to the top */
   min-height: 100vh;
 }
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -43,7 +94,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #e6e1e1;
   cursor: pointer;
   transition: border-color 0.25s;
 }

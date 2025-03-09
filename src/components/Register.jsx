@@ -33,10 +33,10 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen sm:px-10 md:px-25 lg:px-50 xl:px-150">
-      <form onSubmit={handleSubmit} className="w-full max-w-lg p-6 bg-gray-900 rounded-lg shadow-lg">
+    <div className="flex justify-center items-center h-screen ">
+      <form onSubmit={handleSubmit} className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
         <div className="mb-4">
-          <label htmlFor="name" className="block text-white text-lg font-medium">Name</label>
+          <label htmlFor="name" className="block text-gray-700 text-lg font-medium">Name</label>
           <input
             type="text"
             name="name"
@@ -44,12 +44,12 @@ const Register = () => {
             placeholder="Enter your name"
             onChange={handleChange}
             required
-            className="mt-2 w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="email" className="block text-white text-lg font-medium">Email</label>
+          <label htmlFor="email" className="block text-gray-700 text-lg font-medium">Email</label>
           <input
             type="email"
             name="email"
@@ -57,12 +57,12 @@ const Register = () => {
             placeholder="Enter your email"
             onChange={handleChange}
             required
-            className="mt-2 w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="block text-white text-lg font-medium">Password</label>
+          <label htmlFor="password" className="block text-gray-700 text-lg font-medium">Password</label>
           <input
             type="password"
             name="password"
@@ -70,7 +70,7 @@ const Register = () => {
             placeholder="Enter your password"
             onChange={handleChange}
             required
-            className="mt-2 w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -83,12 +83,12 @@ const Register = () => {
             onChange={handleChange}
             className="mr-2 rounded"
           />
-          <label htmlFor="isAdmin" className="text-white text-sm">Register as Admin</label>
+          <label htmlFor="isAdmin" className="text-gray-700 text-sm">Register as Admin</label>
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full py-3 px-6 bg-blue-500  focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Register
         </button>

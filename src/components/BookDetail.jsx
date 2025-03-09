@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
-import { useAuth } from '../contexts/AuthContext'; // Import AuthContext to check if the user is logged in
+import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import { FaShoppingCart, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 function BookDetail() {
   const { id } = useParams();
   const [book, setBook] = useState(null);
-  const { addToCart } = useCart(); // Use addToCart from context
-  const { user } = useAuth(); // Get user info from AuthContext
+  const { addToCart } = useCart();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -22,24 +23,35 @@ function BookDetail() {
     fetchBook();
   }, [id]);
 
-  if (!book) return <p>Loading...</p>;
+  if (!book) return <p className="text-center text-lg">Loading...</p>;
 
-  return ( 
-    <div className="sm:ml-10 md:ml-25 lg:ml-50 xl:ml-120 flex justify-center items-center h-screen">
-      <div className="p-10 border rounded-lg shadow-lg bg-gray-800 text-white w-full max-w-lg">
-        <h2 className="text-5xl font-bold text-white">{book.title}</h2>
-        <p className="text-lg text-gray-400">by {book.author}</p>
-        <p className="text-lg text-yellow-300">${book.price}</p>
-        <p className="text-gray-400">{book.category}</p>
-        <p className=" py-4 text-lg text-gray-300">{book.description}</p>
-        <p className="text-gray-300">Stock: {book.stock}</p>
-
-        {user && (
+  return (
+    <div className="flex justify-center items-center min-h-screen p-6">
+      <div className="p-8 border rounded-lg shadow-lg bg-white text-gray-900 w-full max-w-xl">
+        <h2 className="text-5xl font-bold text-gray-800">{book.title}</h2>
+        <p className="text-xl text-gray-600">by {book.author}</p>
+        <p className="text-2xl font-semibold text-green-600">${book.price}</p>
+        <p className="text-lg text-gray-800">Category: {book.category}</p>
+        <p className="py-6 text-lg text-gray-700 leading-relaxed">{book.description}</p>
+        
+        <div className="flex items-center space-x-2">
+          {book.stock > 0 ? (
+            <FaCheckCircle className="text-green-500 text-lg" />
+          ) : (
+            <FaTimesCircle className="text-red-500 text-lg" />
+          )}
+          <span className={book.stock > 0 ? "text-green-600" : "text-red-600"}>
+            {book.stock > 0 ? `In Stock (${book.stock})` : 'Out of Stock'}
+          </span>
+        </div>
+        
+        {user && book.stock > 0 && (
           <button
-            onClick={() => addToCart(book._id, 1)} // Correct way to call addToCart
-            className="mt-4 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
+            onClick={() => addToCart(book._id, 1)}
+            className="mt-6 px-6 py-3 text-blue-500 flex items-center justify-center space-x-2 w-full"
           >
-            Add to Cart
+            <FaShoppingCart className="text-blue text-lg" />
+            <span className="font-semibold">Add to Cart</span>
           </button>
         )}
       </div>

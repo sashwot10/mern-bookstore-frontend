@@ -12,7 +12,7 @@ const Checkout = () => {
   };
 
   return (
-    <div className="max-w-md mx-30  py-50 sm:px-10 md:px-25 lg:px-50 xl:px-130 ">
+    <div className="max-w-md mx-30  py-50 ">
       <h2 className="text-xl font-semibold mb-4">Choose Payment Method</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
