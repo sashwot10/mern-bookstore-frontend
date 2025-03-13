@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaUser, FaEnvelope, FaLock, FaUserShield } from "react-icons/fa";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -35,8 +36,9 @@ const Register = () => {
   return (
     <div className="flex justify-center items-center h-screen ">
       <form onSubmit={handleSubmit} className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 text-lg font-medium">Name</label>
+        {/* Name Input */}
+        <div className="mb-4 relative">
+          <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             name="name"
@@ -44,12 +46,13 @@ const Register = () => {
             placeholder="Enter your name"
             onChange={handleChange}
             required
-            className="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-10 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 text-lg font-medium">Email</label>
+        {/* Email Input */}
+        <div className="mb-4 relative">
+          <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="email"
             name="email"
@@ -57,12 +60,13 @@ const Register = () => {
             placeholder="Enter your email"
             onChange={handleChange}
             required
-            className="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-10 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700 text-lg font-medium">Password</label>
+        {/* Password Input */}
+        <div className="mb-4 relative">
+          <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="password"
             name="password"
@@ -70,10 +74,11 @@ const Register = () => {
             placeholder="Enter your password"
             onChange={handleChange}
             required
-            className="mt-2 w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-10 py-2 bg-gray-100 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
+        {/* Admin Checkbox */}
         <div className="mb-6 flex items-center">
           <input
             type="checkbox"
@@ -84,11 +89,13 @@ const Register = () => {
             className="mr-2 rounded"
           />
           <label htmlFor="isAdmin" className="text-gray-700 text-sm">Register as Admin</label>
+          <FaUserShield className="text-gray-500 ml-2" />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-blue-500  focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full py-3 px-6 text-blue-500  focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Register
         </button>

@@ -19,13 +19,13 @@ const HomePage = () => {
     <div className="container mx-auto px-4">
       <header className="text-center mt-8">
         {/* Hero Section with Lottie animation */}
-        <div className="flex items-center justify-center flex-col sm:flex-row sm:space-x-8">
+        <div className="flex items-center justify-center flex-col sm:flex-row sm:space-x-4">
           <div className="w-full sm:w-1/2">
-            <Lottie options={defaultOptions} height={300} width={300} />
+            <Lottie options={defaultOptions} height={400} width={300} />
           </div>
           <div className="w-full sm:w-1/2 mt-4 sm:mt-0">
             <h1 className="responsive-heading">Welcome to the Bookstore</h1>
-            <p className="responsive-text">Discover a wide variety of books to explore and enjoy</p>
+            <p className="text-base sm:text-lg break-text">Discover a wide variety of books to explore.  </p>
           </div>
         </div>
 

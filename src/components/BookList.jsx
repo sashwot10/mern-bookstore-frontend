@@ -44,29 +44,28 @@ function BookList() {
   const popularAuthorBooks = filteredBooks.filter(
     (book) => book.author === 'Nora Roberts' || book.author === 'Stephen King'
   );
-
-  // Swiper settings
   const swiperSettings = {
     navigation: true,
     modules: [Navigation],
     spaceBetween: 20,
-    slidesPerView: 4, // Default for larger screens
+    slidesPerView: 4, // Default for large screens
     breakpoints: {
-      0: { slidesPerView: 1 },  // Below 640px, 1 book per slide
-      640: { slidesPerView: 2 }, // 640px and up, 2 books per slide
-      1024: { slidesPerView: 4 }, // 1024px and up, 3 books per slide
+      1024: { slidesPerView: 4 }, // Large screens
+      800: { slidesPerView: 3 },  // Tablets
+      580: { slidesPerView: 2 },
+      0: { slidesPerView: 1 },    // Extra small screens
     },
-    onResize: (swiper) => console.log("Current breakpoint:", swiper.currentBreakpoint)
+  
   };
 
   // Render Book Section
   const renderBookSection = (books, category) => (
-    <div className="max-w-6xl mx-auto mb-8">
+    <div className="max-w-6xl mx-auto mb-10">
       <h3 className="text-xl font-semibold text-gray-900">{category}</h3>
       <Swiper className="swiper-container" {...swiperSettings}>
         {books.map((book) => (
           <SwiperSlide key={book._id}>
-            <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
+            <div className="bg-gray-100  shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
               <div className="absolute top-2 left-0 right-0 mx-auto text-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Link
                   to={`/book/${book._id}`}
@@ -112,7 +111,7 @@ function BookList() {
 
       {/* Available Books Section */}
       <div className="max-w-6xl mx-auto">
-        <Swiper {...swiperSettings}>
+      <Swiper className="swiper-container" {...swiperSettings}>
           {availableBooks.map((book) => (
             <SwiperSlide key={book._id}>
               <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
@@ -159,13 +158,13 @@ function BookList() {
 
       {/* Out of Stock Books Section */}
       {outOfStockBooks.length > 0 && (
-        <div className="max-w-5xl mx-auto text-center mt-12">
+        <div className="max-w-5xl mx-auto text-center mt-12 mb-5">
           <h2 className="text-2xl font-bold text-red-600">Out of Stock</h2>
           <p className="text-gray-600">These books are currently unavailable</p>
         </div>
       )}
       <div className="max-w-6xl mx-auto">
-        <Swiper {...swiperSettings}>
+      <Swiper className="swiper-container" {...swiperSettings}>
           {outOfStockBooks.map((book) => (
             <SwiperSlide key={book._id}>
               <div className="bg-gray-200 shadow-lg rounded-lg p-5 text-center opacity-80 transition-all transform hover:scale-105 hover:shadow-2xl">
@@ -189,9 +188,9 @@ function BookList() {
       </div>
 
       {/* Popular Categories Section */}
-      <div className="max-w-5xl mx-auto mb-8">
+      <div className="max-w-5xl mx-auto mb-8 mt-10 py-2">
       <h1 class="responsive-heading">Popular Categories</h1>
-      </div>
+      </div >
 
       {/* Category Sections */}
       {renderBookSection(dystopianBooks, 'Dystopian')}
@@ -199,7 +198,7 @@ function BookList() {
       {renderBookSection(fantasyBooks, 'Fantasy')}
 
       {/* Popular Authors Section */}
-      <div className="max-w-6xl mx-auto mb-8">
+      <div className="max-w-6xl mx-auto mb-8 py-3">
       <h1 class="responsive-heading">Popular Authors</h1>
       </div>
       {renderBookSection(
@@ -207,7 +206,7 @@ function BookList() {
         'Stephen King'
       )}
       
-      <div className="max-w-6xl mx-auto mb-8">
+      <div className="max-w-6xl mx-auto mb-8 py-3">
        
       </div>
       {renderBookSection(

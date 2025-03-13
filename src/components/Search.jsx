@@ -10,15 +10,15 @@ const Search = ({ onSearch }) => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-4 px-6">
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        placeholder="Search books..."
-        className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-      />
-    </div>
+    <div className="max-w-6xl mx-auto py-4 px-4 sm:px-6">
+    <input
+      type="text"
+      value={searchQuery}
+      onChange={handleSearchChange}
+      placeholder="Search books..."
+      className="w-full p-2 sm:p-4 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+    />
+  </div>
   );
 };
 
