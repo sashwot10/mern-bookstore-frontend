@@ -15,6 +15,7 @@ function BookList() {
   const [searchQuery, setSearchQuery] = useState('');
   const { addToCart } = useCart();
   const { user } = useAuth();
+  const [addedBooks, setAddedBooks] = useState({})
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -27,6 +28,11 @@ function BookList() {
     };
     fetchBooks();
   }, []);
+  const handleAddToCart = (bookId) => {
+    addToCart(bookId, 1);
+    setAddedBooks((prev) => ({ ...prev, [bookId]: true })); // Mark as added
+  };
+
 
   // Filter books based on search query
   const filteredBooks = books.filter((book) =>
@@ -65,33 +71,40 @@ function BookList() {
       <Swiper className="swiper-container" {...swiperSettings}>
         {books.map((book) => (
           <SwiperSlide key={book._id}>
-            <div className="bg-gray-100  shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
-              <div className="absolute top-2 left-0 right-0 mx-auto text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Link
-                  to={`/book/${book._id}`}
-                  className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500 flex items-center justify-center"
-                >
-                  <FaEye className="mr-2" /> View Details
-                </Link>
-              </div>
-
-              <h3 className="text-xl font-semibold text-gray-900">{book.title}</h3>
-              <p className="text-gray-600">by {book.author}</p>
-              <p className="text-gray-800 font-bold">${book.price}</p>
-              <p className="text-gray-500">{book.category}</p>
-              <p className="text-gray-600">{book.description.substring(0, 55)}...</p>
-              <p className="text-gray-700">Stock: {book.stock}</p>
-              <div className="mt-4 flex justify-center space-x-3">
-                {user && (
-                  <button
-                    onClick={() => addToCart(book._id, 1)}
-                    className="px-4 py-2 text-blue-500 flex items-center"
+            <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl h-[350px] flex flex-col justify-between">
+  <div>
+    <h3 className="text-xl font-semibold text-gray-900 truncate max-w-[90%] mx-auto">{book.title}</h3>
+    <p className="text-gray-600">by {book.author}</p>
+    <p className="text-gray-800 font-bold">${book.price}</p>
+    <p className="text-gray-500">{book.category}</p>
+    <p className="text-gray-600 line-clamp-3">{book.description}</p>
+  </div>
+  <p className="text-gray-700">Stock: {book.stock}</p>
+  <div className="mt-2">
+                  <Link
+                    to={`/book/${book._id}`}
+                    className="px-4 py-2  rounded hover:bg-blue-100 flex items-center justify-center"
                   >
-                    <FaShoppingCart className="mr-2" /> Add to Cart
-                  </button>
-                )}
-              </div>
-            </div>
+                    <FaEye className="mr-2" /> View Details
+                  </Link>
+                </div>
+  <div className="mt-4 flex justify-center space-x-3">
+    {user && (
+      <button
+        onClick={() => handleAddToCart(book._id)}
+        className={`px-4 py-2 text-blue-500 flex items-center ${addedBooks[book._id] ? 'text-blue-600' : 'text-blue-500'}`}
+        disabled={addedBooks[book._id]}
+      >
+        {addedBooks[book._id] ? 'Book Added to Cart' : (
+          <>
+            <FaShoppingCart className="mr-2" /> Add to Cart
+          </>
+        )}
+      </button>
+    )}
+    
+  </div>
+</div>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -114,33 +127,39 @@ function BookList() {
       <Swiper className="swiper-container" {...swiperSettings}>
           {availableBooks.map((book) => (
             <SwiperSlide key={book._id}>
-              <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl">
-                <div className="absolute top-2 left-0 right-0 mx-auto text-center opacity-0 group-hover:opacity-100 transition-opacity">
+             <div className="bg-gray-100 shadow-lg rounded-lg p-5 text-center relative group transition-all transform hover:scale-105 hover:shadow-2xl h-[350px] flex flex-col justify-between">
+  <div>
+    <h3 className="text-xl font-semibold text-gray-900 truncate max-w-[90%] mx-auto">{book.title}</h3>
+    <p className="text-gray-600">by {book.author}</p>
+    <p className="text-gray-800 font-bold">${book.price}</p>
+    <p className="text-gray-500">{book.category}</p>
+    <p className="text-gray-600 line-clamp-3">{book.description}</p>
+  </div>
+  <p className="text-gray-700">Stock: {book.stock}</p>
+  <div className="mt-2">
                   <Link
                     to={`/book/${book._id}`}
-                    className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500 flex items-center justify-center"
+                    className="px-4 py-2  rounded transition-all transform hover:scale-105 hover:bg-blue-100  flex items-center justify-center"
                   >
                     <FaEye className="mr-2" /> View Details
                   </Link>
                 </div>
-
-                <h3 className="text-xl font-semibold text-gray-900">{book.title}</h3>
-                <p className="text-gray-600">by {book.author}</p>
-                <p className="text-gray-800 font-bold">${book.price}</p>
-                <p className="text-gray-500">{book.category}</p>
-                <p className="text-gray-600">{book.description.substring(0, 55)}...</p>
-                <p className="text-gray-700">Stock: {book.stock}</p>
-                <div className="mt-4 flex justify-center space-x-3">
-                  {user && (
-                    <button
-                      onClick={() => addToCart(book._id, 1)}
-                      className="px-4 py-2 text-blue-500 flex items-center"
-                    >
-                      <FaShoppingCart className="mr-2" /> Add to Cart
-                    </button>
-                  )}
-                </div>
-              </div>
+  <div className="mt-4 flex justify-center space-x-3">
+    {user && (
+      <button
+        onClick={() => handleAddToCart(book._id)}
+        className={`px-4 py-2 text-blue-500 flex items-center  ${addedBooks[book._id] ? 'text-blue-600' : 'text-blue-500'}`}
+        disabled={addedBooks[book._id]}
+      >
+        {addedBooks[book._id] ? 'Book Added to Cart' : (
+          <>
+            <FaShoppingCart className="mr-2" /> Add to Cart
+          </>
+        )}
+      </button>
+    )}
+  </div>
+</div>
             </SwiperSlide>
           ))}
         </Swiper>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaMagic, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import UpdateBook from './UpdateBook';
 
 const ManageBooks = () => {
   const [books, setBooks] = useState([]);
@@ -13,6 +14,7 @@ const ManageBooks = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [bookToUpdate, setBookToUpdate] = useState(null); // Track the book being updated
   const formRef = useRef(null); // Reference to scroll to the form
 
   useEffect(() => {
@@ -77,33 +79,6 @@ const ManageBooks = () => {
     }
   };
 
-  const handleUpdateBook = async (bookId) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`https://mern-bookstore-backend-e61o.onrender.com/api/books/${bookId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newBook),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      setSuccessMessage('Book updated successfully!');
-      setBooks(books.map((book) => (book._id === bookId ? { ...book, ...newBook } : book)));
-      setNewBook({
-        title: '',
-        author: '',
-        price: '',
-        description: '',
-        category: '',
-        stock: '',
-      });
-    } else {
-      setErrorMessage(data.message);
-    }
-  };
-
   const handleAutofillBook = (book) => {
     setNewBook({
       title: book.title,
@@ -115,6 +90,21 @@ const ManageBooks = () => {
     });
 
     formRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleUpdateBookPopup = (book) => {
+    setBookToUpdate(book); // Set the book to update
+  };
+
+  const handleCloseUpdatePopup = () => {
+    setBookToUpdate(null); // Close the update popup
+  };
+
+  const handleUpdateBook = (updatedBook) => {
+    // Handle updating the book in the list
+    setBooks(books.map((book) => (book._id === updatedBook._id ? updatedBook : book)));
+    setSuccessMessage('Book updated successfully!');
+    handleCloseUpdatePopup(); // Close the popup after update
   };
 
   return (
@@ -190,7 +180,7 @@ const ManageBooks = () => {
               <button onClick={() => handleAutofillBook(book)} className="px-6 py-2 text-blue-600 hover:bg-blue-100 rounded-lg flex items-center space-x-2">
                 <FaMagic /> <span>Autofill</span>
               </button>
-              <button onClick={() => handleUpdateBook(book._id)} className="px-6 py-2 text-yellow-600 hover:bg-yellow-100 rounded-lg flex items-center space-x-2">
+              <button onClick={() => handleUpdateBookPopup(book)} className="px-6 py-2 text-yellow-600 hover:bg-yellow-100 rounded-lg flex items-center space-x-2">
                 <FaEdit /> <span>Update</span>
               </button>
               <button onClick={() => handleDeleteBook(book._id)} className="px-6 py-2 text-red-600 hover:bg-red-100 rounded-lg flex items-center space-x-2">
@@ -200,6 +190,11 @@ const ManageBooks = () => {
           </div>
         ))}
       </div>
+
+      {/* Conditionally render UpdateBook popup */}
+      {bookToUpdate && (
+        <UpdateBook book={bookToUpdate} onClose={handleCloseUpdatePopup} onUpdate={handleUpdateBook} />
+      )}
     </div>
   );
 };

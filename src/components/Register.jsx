@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaUserShield } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ const Register = () => {
     password: "",
     isAdmin: false, // Default to false
   });
+
+  const navigate = useNavigate(); // Initialize navigate function
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,6 +31,11 @@ const Register = () => {
 
       const data = await response.json();
       alert(data.message);
+
+      if (response.ok) {
+        // Redirect to login page after successful registration
+        navigate("/login"); // Change this path if necessary
+      }
     } catch (error) {
       console.error("Error registering:", error);
     }
